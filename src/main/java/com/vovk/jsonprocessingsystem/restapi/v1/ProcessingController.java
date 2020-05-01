@@ -2,6 +2,7 @@ package com.vovk.jsonprocessingsystem.restapi.v1;
 
 import com.vovk.jsonprocessingsystem.services.ProcessingService;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/v1/process")
 public class ProcessingController {
 
-    ProcessingService processingService;
+    private ProcessingService processingService;
 
     @Autowired
     public ProcessingController(ProcessingService processingService) {
@@ -32,10 +33,17 @@ public class ProcessingController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
+    @GetMapping(value = "/download/{uuid}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity download(@PathVariable("uuid") String documentUUID) {
+        return new ResponseEntity<>(processingService.get(documentUUID), HttpStatus.OK);
+    }
+
     @PostMapping(value = "/upload/data")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity upload(@RequestBody String json) {
-        return new ResponseEntity(HttpStatus.CREATED);
+    public ResponseEntity upload(@RequestBody JSONObject json) {
+        String id = processingService.save(json);
+        return new ResponseEntity<>(id, HttpStatus.CREATED);
     }
 
     @DeleteMapping(value = "/delete/{jsonId}")
@@ -44,8 +52,8 @@ public class ProcessingController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @PatchMapping(value = "/insert/{jsonId}")
-    public ResponseEntity insert (@PathVariable String jsonId, @RequestBody String jsonData) {
+    @PatchMapping(value = "/insert/{jsonFileId}")
+    public ResponseEntity insert (@PathVariable String jsonFileId, @RequestBody JSONObject jsonData) {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 

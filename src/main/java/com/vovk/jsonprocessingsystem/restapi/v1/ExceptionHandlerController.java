@@ -1,5 +1,6 @@
 package com.vovk.jsonprocessingsystem.restapi.v1;
 
+import com.vovk.jsonprocessingsystem.model.exceptions.EntityNotFoundException;
 import com.vovk.jsonprocessingsystem.model.exceptions.ResponseMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class ExceptionHandlerController {
 
-    @ExceptionHandler(NullPointerException.class)
+    @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseMessage handleNPE(Throwable ex) {
         return new ResponseMessage(ex.getMessage());
