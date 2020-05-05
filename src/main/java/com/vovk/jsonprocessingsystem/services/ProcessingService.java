@@ -9,13 +9,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface ProcessingService {
 
-    JSONObject get (String uuid);
+    JSONObject get (String jsonFileId);
 
     String save (MultipartFile multipartFile);
 
-    String save (JSONObject json);
+    String save (JSONObject jsonFile);
 
     void update (String jsonFileId, String jsonData);
 
-    void delete(String UUID);
+    void delete(String jsonFileId);
 }

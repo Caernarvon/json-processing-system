@@ -6,9 +6,7 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -27,32 +25,34 @@ public class ProcessingController {
         this.processingService = processingService;
     }
 
-    @PostMapping(value = "/upload/file")
+    @PostMapping(value = "/file")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity upload(@RequestParam("jsonFile") MultipartFile jsonFile) {
-        return new ResponseEntity(HttpStatus.CREATED);
-    }
-
-    @GetMapping(value = "/download/{uuid}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity download(@PathVariable("uuid") String documentUUID) {
-        return new ResponseEntity<>(processingService.get(documentUUID), HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/upload/data")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity upload(@RequestBody JSONObject json) {
-        String id = processingService.save(json);
+        String id = processingService.save(jsonFile);
         return new ResponseEntity<>(id, HttpStatus.CREATED);
     }
 
-    @DeleteMapping(value = "/delete/{jsonId}")
-    public ResponseEntity delete(@PathVariable String jsonId) {
-        processingService.delete(jsonId);
+    //TODO not return file that longer than 10000 rows
+    @GetMapping(value = "/{jsonFileId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity download(@PathVariable("jsonFileId") String jsonFileId) {
+        return new ResponseEntity<>(processingService.get(jsonFileId), HttpStatus.OK);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity upload(@RequestBody JSONObject jsonFile) {
+        String id = processingService.save(jsonFile);
+        return new ResponseEntity<>(id, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping(value = "/{jsonFileId}")
+    public ResponseEntity delete(@PathVariable String jsonFileId) {
+        processingService.delete(jsonFileId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @PatchMapping(value = "/insert/{jsonFileId}")
+    @PatchMapping(value = "/{jsonFileId}")
     public ResponseEntity insert (@PathVariable String jsonFileId, @RequestBody JSONObject jsonData) {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

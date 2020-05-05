@@ -1,9 +1,9 @@
 package com.vovk.jsonprocessingsystem.restapi.v1;
 
-import com.vovk.jsonprocessingsystem.model.exceptions.EntityNotFoundException;
-import com.vovk.jsonprocessingsystem.model.exceptions.ResponseMessage;
+import com.vovk.jsonprocessingsystem.model.exceptions.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -16,9 +16,21 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class ExceptionHandlerController {
 
-    @ExceptionHandler(EntityNotFoundException.class)
+    @ExceptionHandler(BadFileFormatException.class)
+    @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+    protected  ResponseEntity<ResponseMessage> handleBFFE(BadFileFormatException ex) {
+        return new ResponseEntity<>(new ResponseMessage(ex.getMessage()), HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+    }
+
+    @ExceptionHandler(InvalidContentException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    protected  ResponseEntity<ResponseMessage> handleICE(InvalidContentException ex) {
+        return new ResponseEntity<>(new ResponseMessage(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(NoSuchEntityException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseMessage handleNPE(Throwable ex) {
-        return new ResponseMessage(ex.getMessage());
+    protected  ResponseEntity<ResponseMessage> handleNSEE(NoSuchEntityException ex) {
+        return new ResponseEntity<>(new ResponseMessage(ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 }
