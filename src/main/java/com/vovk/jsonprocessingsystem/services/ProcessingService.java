@@ -1,7 +1,6 @@
 package com.vovk.jsonprocessingsystem.services;
 
 import org.json.simple.JSONObject;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author Dmytro Vovk
@@ -9,13 +8,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface ProcessingService {
 
-    JSONObject get (String jsonFileId);
+    String getValue(String jsonFileId, String path);
 
-    String save (MultipartFile multipartFile);
+    JSONObject get (String jsonFileId, String path);
 
-    String save (JSONObject jsonFile);
+    void merge (String jsonFileId, JSONObject jsonData);
 
-    void update (String jsonFileId, String jsonData);
+    void delete (String jsonFileId, String jsonPath);
 
-    void delete(String jsonFileId);
+    void add (String jsonFileId, String pathToPlaceIn, JSONObject jsonData, String key);
+
+    void replace (String jsonFileId, String pathToPlaceIn, JSONObject jsonData);
 }

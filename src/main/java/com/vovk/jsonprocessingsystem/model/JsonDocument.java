@@ -3,6 +3,7 @@ package com.vovk.jsonprocessingsystem.model;
 import com.arangodb.springframework.annotation.Document;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.data.annotation.Id;
 
@@ -13,7 +14,7 @@ import java.util.UUID;
  */
 
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
 @Document("documents")
 public class JsonDocument {
 

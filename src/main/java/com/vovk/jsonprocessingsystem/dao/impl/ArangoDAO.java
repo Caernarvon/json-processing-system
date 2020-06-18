@@ -36,7 +36,7 @@ public class ArangoDAO implements CRUD<JsonDocument> {
 
     @Override
     public void update(JsonDocument entity) {
-
+        documentsRepository.save(entity);
     }
 
     @Override

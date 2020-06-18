@@ -28,9 +28,9 @@ public class ExceptionHandlerController {
         return new ResponseEntity<>(new ResponseMessage(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-    @ExceptionHandler(NoSuchEntityException.class)
+    @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    protected  ResponseEntity<ResponseMessage> handleNSEE(NoSuchEntityException ex) {
+    protected  ResponseEntity<ResponseMessage> handleNSEE(EntityNotFoundException ex) {
         return new ResponseEntity<>(new ResponseMessage(ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 }
